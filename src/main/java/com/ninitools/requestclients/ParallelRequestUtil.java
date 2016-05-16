@@ -1,5 +1,6 @@
 package main.java.com.ninitools.requestclients;
 
+
 import org.apache.http.HttpResponse;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpGet;
@@ -16,11 +17,14 @@ import java.util.concurrent.CountDownLatch;
 
 /**
  * 多异步请求工具类
- * 发生错误时将Throws Exception
+ * 1.List结果的顺序同构造函数的参数顺序
+ * 2.构造函数的参数不可以完全相同，否则后面排序的话会不正确
+ * 3.发生错误时将Throws Exception
  * try
  * {
- *     List<String> resultString_1=new ParallelRequestUtil(3000,"http://192.168.0.1","http://192.168.0.2"); //指定超时时间
- *     List<String> resultString_2=new ParallelRequestUtil("http://192.168.0.1","http://192.168.0.2"); //默认超时时间 5Sec
+ *     List<String> [RESULT] =new ParallelRequestUtil([TimeOut], [URL1], [URL2],[URL3]....[URLN]).getResult(); //List结果顺序 URL1返回 URL2返回...
+ *     List<String> resultString_1=new ParallelRequestUtil(3000,"http://192.168.0.1/usr?delay=1","http://192.168.0.2").getResult(); //指定超时时间 3Sec
+ *     List<String> resultString_2=new ParallelRequestUtil("http://192.168.0.1","http://192.168.0.2").getResult(); //默认超时时间 5Sec
  * }
  * catch(Exception e)
  * {
